@@ -19,22 +19,21 @@ console.clear()
 let sum = theCalculation(number1, number2);
 
 function theCalculation(number1, number2) {
-if (operation == "add" || operation == "plus" || operation == "+" || operation == "1") {
+if (operation == "add" || operation == "+" || operation == "1") {
   if (operation = 1) {
     operation = "+"
   }
   return number1 + number2;
-} else if (operation == "subtract" || operation === "minus" || operation == "-" || operation == "2") {
+} else if (operation == "subtract" || operation == "-" || operation == "2") {
   if (operation = 2) {
     operation = "-"
   }
   return  number1 - number2;
-} else if (operation == "multiply" || operation === "times" || operation == "*" || operation == "3") {
+} else if (operation == "multiply" || operation == "*" || operation == "3") {
   if (operation = 3) {
     operation = "*"
   }
   return  number1 * number2;
-
 } else if (operation == "divide" || operation == "/" || operation == "4") {
   if (operation = 4) {
     operation = "/"
@@ -46,25 +45,30 @@ if (operation == "add" || operation == "plus" || operation == "+" || operation =
   } else {
   return  number1 / number2;
   }
-
 } else if (operation == "exponent" || operation == "exponential" || operation == "5" || operation == "**"|| operation == "^") {
   if (operation = 5) {
     operation = "^"
   }
+  if (number1 === 0 && number2 === 0) {
+    return ("indeterminate");
+  } else {
   return  number1 ** number2;
-  
+  }
 } else if (operation == "remainder" || operation == "%" || operation == "6") {
   if (operation = 6) {
     operation = "%"
-  }
+  } if (number2 === 0 ){
+    return ("Error")
+  } else {
   return  number1 % number2;
-
+  }
 } else {
-  console.log("Error try again!");
+  console.log("Error invaild opperation!");
 }
 };
+
 if (sum === undefined) {
-sum = ("Error try again!");
+sum = ("Error!");
 } else {
 console.log("Calculating...");
 console.log(`\n${number1} ${operation} ${number2} = ${sum}\n`);
