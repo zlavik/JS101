@@ -1,3 +1,5 @@
+/* eslint-disable complexity */
+/* eslint-disable max-len */
 // PSEUDOCODE
 // Ask the user for the first number.
 // Ask the user for the second number.
@@ -19,13 +21,13 @@ console.clear();
 
 let sum = theCalculation(number1, number2);
 
+// eslint-disable-next-line max-lines-per-function
 function theCalculation(number1, number2) {
   if (operation === "add" || operation === "+" || operation === "1") {
     if (operation = 1) {
       operation = "+";
-    } else {
-      return number1 + number2;
-    }
+    } 
+    return number1 + number2;
   } else if (operation === "subtract" || operation === "-" || operation === "2") {
     if (operation = 2) {
       operation = "-";
@@ -59,7 +61,7 @@ function theCalculation(number1, number2) {
   } else if (operation === "remainder" || operation === "%" || operation === "6") {
     if (operation = 6) {
       operation = "%";
-    } if (number2 === 0 ) {
+    } else if (number2 === 0 ) {
       return ("Error");
     } else {
       return  number1 % number2;
@@ -69,6 +71,7 @@ function theCalculation(number1, number2) {
   }
 }
 
+
 if (sum === undefined) {
   sum = ("Error!");
 } else {
@@ -76,5 +79,3 @@ if (sum === undefined) {
   console.log(`\n${number1} ${operation} ${number2} = ${sum}\n`);
   console.log('Exiting calculator..');
 }
-
-
