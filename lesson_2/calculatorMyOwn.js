@@ -1,3 +1,4 @@
+// PSEUDOCODE
 // Ask the user for the first number.
 // Ask the user for the second number.
 // Ask the user for an operation to perform.
@@ -5,7 +6,7 @@
 // Print the result to the terminal.
 let rlSync = require('readline-sync');
 console.clear()
-console.log("Calculator initated..\n")
+console.log("Hello, Calculator has been initated..\n")
 
 let number1 = Number(rlSync.question('Enter the first number: '));
 console.clear()
