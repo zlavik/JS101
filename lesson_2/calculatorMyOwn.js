@@ -24,50 +24,36 @@ let sum = theCalculation(number1, number2);
 // eslint-disable-next-line max-lines-per-function
 function theCalculation(number1, number2) {
   if (operation === "add" || operation === "+" || operation === "1") {
-    if (operation = 1) {
-      operation = "+";
-    } 
+    operation = "+";
     return number1 + number2;
   } else if (operation === "subtract" || operation === "-" || operation === "2") {
-    if (operation = 2) {
-      operation = "-";
-    }
+    operation = "-";
     return  number1 - number2;
   } else if (operation === "multiply" || operation === "*" || operation === "3") {
-    if (operation = 3) {
-      operation = "*";
-    }
+    operation = "*";
     return  number1 * number2;
   } else if (operation === "divide" || operation === "/" || operation === "4") {
-    if (operation = 4) {
-      operation = "/";
-    }
+    operation = "/";
     if (number1 === 0) {
       return 0;
     } else if (number2 === 0) {
       return ("Cannot divide by zero‬");
-    } else {
-      return  number1 / number2;
     }
-  } else if (operation === "exponent" || operation === "exponential" || operation === "5" || operation === "**" || operation === "^") {
-    if (operation = 5) {
-      operation = "^";
-    }
+    return  number1 / number2;
+  } else if (operation === "exponent" || operation === "5" || operation === "^") {
+    operation = "^";
     if (number1 === 0 && number2 === 0) {
       return ("indeterminate");
-    } else {
-      return  number1 ** number2;
     }
+    return  number1 ** number2;
   } else if (operation === "remainder" || operation === "%" || operation === "6") {
-    if (operation = 6) {
-      operation = "%";
-    } else if (number2 === 0 ) {
+    operation = "%";
+    if (number2 === 0 ) {
       return ("Error");
-    } else {
-      return  number1 % number2;
     }
+    return  number1 % number2;
   } else {
-    console.log("Error invaild opperation!");
+    return ("Error invaild opperation!");
   }
 }
 
