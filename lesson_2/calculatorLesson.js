@@ -9,8 +9,10 @@ console.log("Calculator initiated..");
 
 console.log("Enter your first number: ");
 let number1 = readline.question();
+
 console.log("Enter your second number: ");
 let number2 = readline.question();
+
 console.log("What operation would you like to perform?\n1) Add 2) Subtract 3) Multiply 4) Divide");
 let operation = readline.question();
 
