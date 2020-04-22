@@ -18,6 +18,7 @@
     "invaildNumber" : "por favor ingrese un número valido!\n",
     "invaildOperation" : "Debe elegir +, -, *, /, ^, o %\n",
     "continue": "¿Te gustaría realizar otro cálculo?\nEscriba y para sí o n para no.",
-    "FinishCalc": "calculador.."
+    "finishCalc": "calculador..",
+    "anotherCalcInvalid": "Escriba y para sí yn para n"
   }
 }

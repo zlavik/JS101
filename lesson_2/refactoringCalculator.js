@@ -73,7 +73,7 @@ do {
   if (result === undefined || isNaN(result)) {
     console.log("Error!");
   } else {
-    prompt("FinishCalc");
+    prompt("finishCalc");
     console.log(`\n${number1} ${operation} ${number2} = ${result}\n`);
   }
 
