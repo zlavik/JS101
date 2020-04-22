@@ -6,62 +6,83 @@
 // Ask the user for an operation to perform.
 // Perform the operation on the two numbers.
 // Print the result to the terminal.
-let rlSync = require('readline-sync');
-console.clear();
-console.log("Hello, Calculator has been initated..\n");
+const readline = require('readline-sync');
+let result;
+let number1;
+let operation;
+let number2;
 
-let number1 = Number(rlSync.question('Enter the first number: '));
-console.clear();
-console.log("Enter one of the following:");
-let operation = rlSync.question('\n1) (+) add \n2) (-) subtract \n3) (*) multiply \n4) (/) divide \n5) (^) exponential \n6) (%) remainder \n');
+function prompt(message) {
+  console.log(`=> ${message}`);
+}
+
+function invalidNumber(number) {
+  return number.trimStart() === '' || Number.isNaN(Number(number));
+}
 console.clear();
 
-let number2 = Number(rlSync.question('Enter the second number: '));
+prompt("Calculator has been initiated..\n");
+prompt('Enter your first number: ');
+number1 = readline.question();
+while (invalidNumber(number1)) {
+  prompt("Please enter a valid number!\n");
+  number1 = readline.question();
+}
 console.clear();
 
-let sum = theCalculation(number1, number2);
+prompt("Enter one of the following:");
+console.log('\n1) +\n2) -\n3) *\n4) /\n5) ^\n6) %\n');
+operation = readline.question();
+while (!['1', '2', '3', '4', '5' , '6'].includes(operation)) {
+  prompt("Must choose 1, 2, 3, 4, 5, or 6\n");
+  operation = readline.question();
+}
+console.clear();
 
-// eslint-disable-next-line max-lines-per-function
+prompt('Enter your second number: ');
+number2 = readline.question();
+while (invalidNumber(number2)) {
+  prompt("Please enter a valid number!\n");
+  number2 = readline.question();
+}
+console.clear();
+
+
+result = theCalculation(number1, number2);
 function theCalculation(number1, number2) {
-  if (operation === "add" || operation === "+" || operation === "1") {
-    operation = "+";
-    return number1 + number2;
-  } else if (operation === "subtract" || operation === "-" || operation === "2") {
-    operation = "-";
-    return  number1 - number2;
-  } else if (operation === "multiply" || operation === "*" || operation === "3") {
-    operation = "*";
-    return  number1 * number2;
-  } else if (operation === "divide" || operation === "/" || operation === "4") {
-    operation = "/";
+  if (operation === "+") {
+    return Number(number1) + Number(number2);
+  } else if (operation === "2") {
+    return  Number(number1) - Number(number2);
+  } else if (operation === "3") {
+    return  Number(number1) * Number(number2);
+  } else if (operation === "4") {
     if (number1 === 0) {
       return 0;
     } else if (number2 === 0) {
       return ("Cannot divide by zero‬");
     }
-    return  number1 / number2;
-  } else if (operation === "exponent" || operation === "5" || operation === "^") {
-    operation = "^";
+    return  Number(number1) / Number(number2);
+  } else if (operation === "^") {
     if (number1 === 0 && number2 === 0) {
       return ("indeterminate");
     }
-    return  number1 ** number2;
-  } else if (operation === "remainder" || operation === "%" || operation === "6") {
-    operation = "%";
+    return  Number(number1) ** Number(number2);
+  } else if (operation === "6") {
     if (number2 === 0 ) {
       return ("Error");
     }
-    return  number1 % number2;
+    return  Number(number1) % Number(number2);
   } else {
     return ("Error invaild opperation!");
   }
 }
 
 
-if (sum === undefined) {
-  sum = ("Error!");
+if (result === undefined) {
+  result = ("Error!");
 } else {
   console.log("Calculating...");
-  console.log(`\n${number1} ${operation} ${number2} = ${sum}\n`);
+  console.log(`\n${number1} ${operation} ${number2} = ${result}\n`);
   console.log('Exiting calculator..');
 }
