@@ -49,7 +49,7 @@ switch (operation) {
     break;
   case '3':
     operation = "*";
-    sum = Number(number1) * Number(number2);;
+    sum = Number(number1) * Number(number2);
     break;
   case '4':
     operation = "/";
