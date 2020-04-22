@@ -1,0 +1,23 @@
+{
+  "en": {
+    "welcomeMsg": "Calculator has been initiated..\n",
+    "firstNumber": "Enter the first number: ",
+    "secondNumber": "Enter the second number: ",
+    "operation": "Enter one of the following: \n +\n -\n *\n /\n ^\n %\n",
+    "invaildNumber" : "Please enter a valid number!\n",
+    "invaildOperation" : "Must choose +, -, *, /, ^, or %\n",
+    "continue": "Would you like to perform another calculation?\nType y for yes or n for no.",
+    "FinishCalc": "Calculating..",
+    "anotherCalcInvalid": "Type y for yes and n for n"
+  },
+  "es":{
+    "welcomeMsg": "Calculadora iniciada..\n",
+    "firstNumber": "Ingrese el primer número: ",
+    "secondNumber": "Ingrese el segundo número: ",
+    "operation": "Ingrese uno de los siguientes: \n +\n -\n *\n /\n ^\n %\n",
+    "invaildNumber" : "por favor ingrese un número valido!\n",
+    "invaildOperation" : "Debe elegir +, -, *, /, ^, o %\n",
+    "continue": "¿Te gustaría realizar otro cálculo?\nEscriba y para sí o n para no.",
+    "FinishCalc": "calculador.."
+  }
+}
