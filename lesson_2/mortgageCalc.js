@@ -1,41 +1,61 @@
 const readline = require('readline-sync');
 const VALID_RESPONSES = ['1', '2'];
+const MESSAGES = require('./mortgageMessages.json');
+const LANGUAGE = 'en';
 
-function prompt(message) {
+function messages(message, lang = 'en') {
+  return MESSAGES[lang][message];
+}
+
+function prompt(key) {
+  let message = messages(key, LANGUAGE);
   console.log(`=> ${message}`);
 }
 
-function invalidNumber(number) {
-  return number.trimStart() === '' || Number.isNaN(Number(number));
+function invalidApr(input) {
+  return input.trimStart() === 0 ||
+    input === '' ||
+    Number(input) < 0 ||
+    Number.isNaN(Number(input));
 }
 
+function invalidNumber(input) {
+  return input.trimStart() === 0 ||
+    input === '' ||
+    Number(input) <= 0 ||
+    Number.isNaN(Number(input));
+}
 
 while (true) {
   console.clear();
-  prompt('Loan Calculator is running!\n\n');
+  prompt('welcome_message');
 
-  let loan = readline.question('=> What is the Loan amount?: $');
+  prompt('loan_amount');
+  let loan = readline.question();
   while (invalidNumber(loan)) {
-    console.log("Invalid amount. Enter a number: ");
+    prompt("invalid_amount");
     loan = readline.question();
   }
 
-  let apr = readline.question('=> What is your interest rate?: ');
-  while (invalidNumber(apr)) {
-    console.log("Invalid interest rate. Enter again: ");
+  prompt('interest_rate');
+  let apr = readline.question();
+  while (invalidApr(apr)) {
+    prompt("positive_number");
     apr = readline.question();
   }
 
-  let loanDuration = readline.question('=> Loan period: ');
+  prompt('loan_length');
+  let loanDuration = readline.question();
   while (invalidNumber(loanDuration)) {
-    console.log("Invalid loan period. Enter again: ");
+    prompt("invalid_loan_length");
     loanDuration = readline.question();
   }
 
-  let laonFormat = readline.question(`=> ${loanDuration} years or months?:\n\n1) years\n2) months\n`);
+  prompt(`length_format`);
+  let laonFormat = readline.question();
   while (laonFormat.trimStart() === '' ||
                   !VALID_RESPONSES.includes(laonFormat)) {
-    console.log("Invalid loan format. Enter: 1) for years, or 2) for months\n");
+    prompt("invalid_length_format");
     laonFormat = readline.question();
   }
 
@@ -66,20 +86,21 @@ while (true) {
   let totalCost = monthlyPayments * loanDuration;
   let totalInterestAmount = totalCost - loan;
 
-  prompt(`Loan: $${Number(loan).toFixed(2)}`);
-  prompt(`Total interest Paid on loan: $${totalInterestAmount.toFixed(2)}`);
-  prompt(`Total cost: $${totalCost.toFixed(2)}`);
-  prompt(`Monthly payments: $${monthlyPayments.toFixed(2)}\n\n`);
+  console.log(`Loan: $${Number(loan).toFixed(2)}`);
+  console.log(`Total interest Paid on loan: $${totalInterestAmount.toFixed(2)}`);
+  console.log(`Total cost: $${totalCost.toFixed(2)}`);
+  console.log(`Monthly payments: $${monthlyPayments.toFixed(2)}\n\n`);
 
-  prompt("Another calculation?");
+  prompt("another_calc");
   let answer = readline.question().toLowerCase();
   while (answer[0] !== 'n' && answer[0] !== 'y') {
-    prompt('Please enter "y" or "n".');
+    prompt('valid_exit');
     answer = readline.question().toLowerCase();
   }
 
   if (answer[0] === 'n') {
-    console.log("Stopping loan calculations...");
+    console.clear();
+    prompt("exit_message");
     break;
   }
 }

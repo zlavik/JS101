@@ -1,0 +1,16 @@
+{
+  "en": {
+    "welcome_message": "Loan Calculator has loaded <=\n\n",
+    "loan_amount": "What is your loan amount?",
+    "interest_rate": "What is the interest rate of this loan?",
+    "loan_length": "What is the length length of this loan?",
+    "invalid_amount": "Invalid amount. Please enter a greater than 0 number.",
+    "positive_number": "Invalid interest rate. Enter a positive number.",
+    "another_calc": "Do you want to perform another calculation?\nEnter 'y' to continue or 'n' to exit calculator.",
+    "valid_exit": "Please, enter 'y' to continue or 'n' to exit calculator.",
+    "exit_message": "Thank you for using Calculator!",
+    "length_format":"Is that in years or months?:\n\n1) years\n2) months\n",
+    "invalid_length_format":"Invalid loan format. Enter: 1) for years, or 2) for months\n",
+    "invalid_loan_length":"Invalid loan length. Please enter a number greater than 0: "
+  }
+}
