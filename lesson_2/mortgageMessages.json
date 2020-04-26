@@ -12,5 +12,19 @@
     "length_format":"Is that in years or months?:\n\n1) years\n2) months\n",
     "invalid_length_format":"Invalid loan format. Enter: 1) for years, or 2) for months\n",
     "invalid_loan_length":"Invalid loan length. Please enter a number greater than 0: "
+  },
+  "es": {
+    "welcome_message": "Calculadora de préstamos cargada <=\n\n",
+    "loan_amount": "¿Cuál es el monto de su préstamo?",
+    "interest_rate": "¿Cuál es la tasa de interés de este préstamo?",
+    "loan_length": "¿Cuál es la duración de este préstamo?",
+    "invalid_amount": "Monto invalido. Ingrese un número mayor que 0.",
+    "positive_number": "Tasa de interés no válida Ingrese un número positivo.",
+    "another_calc": "¿Quieres realizar otro cálculo?\nIngrese 'y' para continuar o 'n' para salir de la calculadora.",
+    "valid_exit": "Ingrese 'y' para continuar o 'n' para salir de la calculadora.",
+    "exit_message": "¡Gracias por usar la calculadora!",
+    "length_format":"¿Eso es en años o meses ?:\n\n1) años \n2) meses\n",
+    "invalid_length_format":"Formato de préstamo no válido Ingrese: 1) por años, o 2) por meses\n",
+    "invalid_loan_length":"Duración del préstamo no válida Por favor ingrese un número mayor que 0."
   }
 }
