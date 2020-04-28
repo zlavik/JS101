@@ -1,7 +1,37 @@
+/*
+Pseudo-code
+
+- Welcome user
+- Get loan amount
+  - Validate loan amount
+- Get APR
+  - Validate APR
+- Get loan duration
+  - In years
+  - In months
+  - Validate loan duration
+- Run calculation
+- Show calculation results
+- Ask if user would like another calculation
+- End program
+
+Validation checks:
+— 0
+— Negative number
+— Return
+— Empty string
+— Unexpected letter (i.e., u instead of y)
+
+*/
+
+// REQUIRED VARIABLES
+
 const readline = require('readline-sync');
-const VALID_RESPONSES = ['1', '2'];
 const MESSAGES = require('./mortgageMessages.json');
 const LANGUAGE = 'en';
+
+
+// Program functions
 
 function messages(message, lang = 'en') {
   return MESSAGES[lang][message];
@@ -12,95 +42,147 @@ function prompt(key) {
   console.log(`=> ${message}`);
 }
 
-function invalidApr(input) {
-  return input.trimStart() === 0 ||
-    input === '' ||
-    Number(input) < 0 ||
-    Number.isNaN(Number(input));
+// Validation
+const isInvalidNumber = input => {
+  return input.trimStart() === '' ||
+   Number.isNaN(Number(input)) || Number(input) <= 0;
+};
+
+const isInvalidInteger = input => {
+  return input.trimStart() === '' ||
+   !Number.isInteger(Number(input)) || Number(input) < 0;
+};
+
+const isInvalidAPR = input => {
+  return input.trimStart() === '' ||
+   Number.isNaN(Number(input)) || Number(input) < 0;
+};
+
+const isValidAnswer = input => {
+  input = input.toLowerCase();
+  return input !== "y" && input !== "no" &&
+  input !== "n" && input !== "yes";
+};
+
+// Input from users
+function fetchInput(inputType) {
+  prompt(inputType);
+  let input = readline.question();
+  while (isInvalidInput(input, inputType)) {
+    prompt(`invalid_${inputType}`);
+    input = readline.question();
+  }
+  return input;
 }
 
-function invalidNumber(input) {
-  return input.trimStart() === 0 ||
-    input === '' ||
-    Number(input) <= 0 ||
-    Number.isNaN(Number(input));
+// calls Validation checks on user inputs
+function isInvalidInput(input, inputType) {
+  switch (inputType) {
+    case "loan":
+      return isInvalidNumber(input);
+    case "interestRate":
+      return isInvalidAPR(input);
+    case "loanDurationYears":
+      return isInvalidInteger(input);
+    case "loanDurationMonths":
+      return isInvalidInteger(input);
+    case "anotherCalc":
+      return isValidAnswer(input);
+    default:
+      return "Error";
+  }
 }
 
+// converts years into months
+const getTotalLoanDurationMonths = () => {
+  let totalLoanDurationMonths;
+  do {
+    prompt("loanDuration");
+    let loanDurationYears = fetchInput("loanDurationYears");
+    let loanDurationMonths = fetchInput("loanDurationMonths");
+    totalLoanDurationMonths =
+      (12 * Number(loanDurationYears)) + Number(loanDurationMonths);
+    if (totalLoanDurationMonths < 1) {
+      prompt("invalid_loanDuration");
+    }
+  } while (totalLoanDurationMonths < 1);
+  return totalLoanDurationMonths;
+};
+
+// Interest rate conversion and for display purposes
+let displayedInterestRate;
+const getMonthlyInterestRate = interestRate => {
+  if (interestRate >= 1) {
+    displayedInterestRate = interestRate;
+    interestRate /= 100;
+    return interestRate / 12;
+  } else {
+    displayedInterestRate = interestRate * 100;
+    return interestRate / 12;
+  }
+};
+
+// Monthly payment calculations
+const calculateMonthlyPayment = (loan, monthlyInterestRate,
+  loanDurationMonths) => {
+  if (monthlyInterestRate === 0) {
+    return loan / loanDurationMonths;
+  } else {
+    return loan * (monthlyInterestRate /
+      (1 - Math.pow((1 + monthlyInterestRate),(-loanDurationMonths))));
+  }
+};
+
+// Formats years and months for display purposes
+const getFormattedLoanDuration = loanDurationMonths => {
+  let years = Math.floor(loanDurationMonths / 12);
+  let months = loanDurationMonths % 12;
+  if (years === 0) {
+    return `${months} month(s)`;
+  } else if (months === 0) {
+    return `${years} year(s)`;
+  } else {
+    return `${years} year(s) and ${months} month(s)`;
+  }
+};
+// Displays information to user
+const displayPayment = (loan, displayedInterestRate, totalInterestAmount,
+  totalCost, monthlyPayments, formattedLoanDuration) => {
+  console.clear();
+  console.log(`Loan: $${Number(loan).toFixed(2)}` +
+  `\nInterest: ${displayedInterestRate}%` +
+  `\nTotal interest Paid on loan: $${totalInterestAmount.toFixed(2)}` +
+  `\nTotal cost: $${totalCost.toFixed(2)}` +
+  `\nMonthly payments: $${monthlyPayments.toFixed(2)} for ${formattedLoanDuration}\n\n`);
+};
+
+console.clear();
+
+
+// Main calculator
 while (true) {
   console.clear();
   prompt('welcome_message');
 
-  prompt('loan_amount');
-  let loan = readline.question();
-  while (invalidNumber(loan)) {
-    prompt("invalid_amount");
-    loan = readline.question();
-  }
-
-  prompt('interest_rate');
-  let apr = readline.question();
-  while (invalidApr(apr)) {
-    prompt("positive_number");
-    apr = readline.question();
-  }
-
-  prompt('loan_length');
-  let loanDuration = readline.question();
-  while (invalidNumber(loanDuration)) {
-    prompt("invalid_loan_length");
-    loanDuration = readline.question();
-  }
-
-  prompt(`length_format`);
-  let laonFormat = readline.question();
-  while (laonFormat.trimStart() === '' ||
-                  !VALID_RESPONSES.includes(laonFormat)) {
-    prompt("invalid_length_format");
-    laonFormat = readline.question();
-  }
-
-  console.clear();
-
-  if (Number(laonFormat) === 1) {
-    loanDuration *= 12;
-  }
-
-  let monthlyInterestRate;
-  let monthlyPayments;
-
-  if (apr >= 1)  {
-    apr /= 100;
-  }
-
-  if (Number(apr) === 0) {
-    monthlyPayments = loan / loanDuration;
-  } else if (Number(apr) > 0) {
-    monthlyInterestRate = apr / 12;
-    monthlyPayments = loan * (monthlyInterestRate /
-       (1 - Math.pow((1 + monthlyInterestRate),(-(loanDuration)))));
-  } else {
-    console.log("Error");
-  }
-
-
-  let totalCost = monthlyPayments * loanDuration;
+  let loan = fetchInput("loan");
+  let interestRate = fetchInput("interestRate");
+  let monthlyInterestRate = getMonthlyInterestRate(interestRate);
+  let totalLoanDurationMonths = getTotalLoanDurationMonths();
+  let monthlyPayments = calculateMonthlyPayment(loan, monthlyInterestRate,
+    totalLoanDurationMonths);
+  let totalCost = monthlyPayments * totalLoanDurationMonths;
   let totalInterestAmount = totalCost - loan;
+  let formattedLoanDuration = getFormattedLoanDuration(totalLoanDurationMonths);
 
-  console.log(`Loan: $${Number(loan).toFixed(2)}`);
-  console.log(`Total interest Paid on loan: $${totalInterestAmount.toFixed(2)}`);
-  console.log(`Total cost: $${totalCost.toFixed(2)}`);
-  console.log(`Monthly payments: $${monthlyPayments.toFixed(2)}\n\n`);
+  displayPayment(loan, displayedInterestRate, totalInterestAmount, totalCost,
+    monthlyPayments, formattedLoanDuration);
 
-  prompt("another_calc");
-  let answer = readline.question().toLowerCase();
-  while (answer[0] !== 'n' && answer[0] !== 'y') {
-    prompt('valid_exit');
-    answer = readline.question().toLowerCase();
-  }
-
-  if (answer[0] === 'n') {
+  let input = fetchInput("anotherCalc");
+  input = input.toLowerCase();
+  if (input === 'n' || input === 'no' ) {
     console.clear();
-    prompt("exit_message");
+    prompt("exitMessage");
     break;
   }
 }
+// End of program
