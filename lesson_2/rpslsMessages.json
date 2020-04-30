@@ -1,0 +1,18 @@
+{
+  "welcome_message" : "Welcome to Rock, Paper, Scissors, Lizard, Spock!\nYou will be playing a best of five with a computer\n\n",
+  "askName" : "What is your name?: ",
+  "playerChoice" : "Pick one:\nr)  rock\np)  paper\nss) scissors\nl)  lizard\nsp) spock",
+  "invalid_playerChoice" : "Pick r for rock, p for paper, ss for scissors, l for lizard, or sp for spock",
+  "readRules" : "Would you like to read the rules? Enter y/yes or n/no: ",
+  "invalid_readRules" : "Invalid choice. Enter 'y' or 'yes' to read rules, or to skip, type 'n' or 'no'",
+  "playAgain" : "Would you like to play again? Enter y/yes or n/no: ",
+  "invalid_playAgain" : "Invalid choice. Enter 'y' or 'yes' to play again, or to exit, type 'n' or 'no'",
+  "letsContinue" : "Press any key or enter to continue",
+  "playerWins" : "You won the game!",
+  "playerWinsMatch" : "Player wins the match!\n\n",
+  "tie" : "Oh no its a tie!\n\n",
+  "computerWinsMatch" : "Computer wins the match!\n\n",
+  "computerWins" : "Computer won the game...",
+  "rules" : "Rules:\n\nScissors cuts paper\nPaper covers rock\nRock crushes lizard\nLizard poisons Spock\nSpock smashes scissors\nScissors decapitates lizard\nLizard eats paper\nPaper disproves Spock\nSpock vaporizes rock\nRock crushes scissors\n\n",
+  "exitingMessage" : "Thanks for playing"
+}
