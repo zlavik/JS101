@@ -177,9 +177,9 @@ while (true) {
   displayPayment(loan, displayedInterestRate, totalInterestAmount, totalCost,
     monthlyPayments, formattedLoanDuration);
 
-  let input = fetchInput("anotherCalc");
-  input = input.toLowerCase();
-  if (input === 'n' || input === 'no' ) {
+  let answer = fetchInput("anotherCalc");
+  answer = answer.toLowerCase();
+  if (answer === 'n' || answer === 'no' ) {
     console.clear();
     prompt("exitMessage");
     break;
