@@ -52,45 +52,37 @@ function displayMessage(message) {
 }
 
 
-// Gets input from users
-function fetchChoice(inputType) {
-  prompt(inputType);
-  let input = readline.question();
-  while (isInvalidInput(input, inputType)) {
-    prompt(`invalid_${inputType}`);
-    input = readline.question();
-  }
-  return input;
-}
-
-
 // validations
-const isValidAnswer = input => {
-  input = input.toLowerCase();
+const isValidContinueChoice = input => {
   return input !== "y" && input !== "no" &&
         input !== "n" && input !== "yes";
 };
 
-const isValidChoice = input => {
-  input = input.toLowerCase();
+const isValidGameChoices = input => {
   return input !== "r" && input !== "p" &&
           input !== "ss" && input !== "sp" &&
           input !== "l";
 };
 
 
-// Calls Validation checks on user inputs
-function isInvalidInput(input, inputType) {
-  switch (inputType) {
-    case "readRules":
-      return isValidAnswer(input);
-    case "playerChoice":
-      return isValidChoice(input);
-    case "playAgain":
-      return isValidAnswer(input);
-    default:
-      return "Error";
+function fetchChoice(input) {
+  prompt(input);
+  let answer = readline.question().toLowerCase();
+  while (isValidContinueChoice(answer, input)) {
+    prompt(`invalid_${input}`);
+    answer = readline.question().toLowerCase();
   }
+  return answer;
+}
+
+function fetchPlayerMove(input) {
+  prompt(input);
+  let answer = readline.question().toLowerCase();
+  while (isValidGameChoices(answer)) {
+    prompt('invalid_playerChoice');
+    answer = readline.question().toLowerCase();
+  }
+  return answer;
 }
 
 //Game functions
@@ -178,7 +170,7 @@ while (true) {
 }
 // The game
 while (true) {
-  let playerChoice = fetchChoice(`playerChoice`);
+  let playerChoice = fetchPlayerMove(`playerChoice`);
   let randomIndex = Math.floor(Math.random() * VALID_CHOICES.length);
   let computerChoice = VALID_CHOICES[randomIndex];
 
@@ -200,7 +192,6 @@ while (true) {
     displayMatchWinner(score);
 
     let answer = fetchChoice("playAgain");
-    answer = answer.toLowerCase();
     if (answer === 'no' || answer === 'n') {
       console.clear();
       prompt("exitingMessage");
