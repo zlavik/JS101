@@ -7,7 +7,7 @@
   "invalid_readRules" : "Invalid choice. Enter 'y' or 'yes' to read rules, or to skip, type 'n' or 'no'",
   "playAgain" : "Would you like to play again? Enter y/yes or n/no: ",
   "invalid_playAgain" : "Invalid choice. Enter 'y' or 'yes' to play again, or to exit, type 'n' or 'no'",
-  "letsContinue" : "Press enter to continue",
+  "letsContinue" : "Enter anything to continue",
   "playerWins" : "You won the game!",
   "playerWinsMatch" : "Player wins the match!\n\n",
   "tie" : "Oh no its a tie!\n\n",

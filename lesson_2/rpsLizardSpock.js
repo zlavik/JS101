@@ -162,7 +162,7 @@ while (true) {
     prompt("rules");
     let answer = prompt("letsContinue");
     answer = readline.question();
-    if (answer !== true || answer !== false) {
+    if (answer || !answer) {
       console.clear();
       break;
     }
