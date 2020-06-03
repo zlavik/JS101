@@ -1,0 +1,13 @@
+{
+  "welcomeMsg" : "Lets play tic!",
+  "playAgain" : "\nWould you like to play again? (y/yes or n/no)",
+  "playerWon" : "\n==> Player won best of three! <==",
+  "computerWon" : "\n==> Computer won best of three! <==",
+  "tie" : "\n==> This game was a tie. <==",
+  "invalidSquareChose": "Invalid Move! Choose again.",
+  "exitMsg" : "Thanks for playing tic tac toe!",
+  "invalid_playAgain" : "Please enter y / yes for yes or n / no for no",
+  "askWhoGoesFirst" : "Who goes first? ('p' / 'player' or 'c' / 'computer')",
+  "invalidWhoGoesFirstAnswer" : "Enter 'p' for player or 'c' for computer ",
+  "AskToContinue" : "Press [enter] to continue" 
+}
