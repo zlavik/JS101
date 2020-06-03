@@ -256,20 +256,21 @@ console.clear();
 let currentPlayer = chooseWhoStartsFirst(CURRENT_PLAYER);
 
 
-//Play again loop
+// Game
 while (true) {
 
   let currentGame = 0;
   let score = {player : 0, computer : 0};
   displayScore(score.player, score.computer);
 
-  //
+
   while (currentGame < NUMBER_OF_GAMES) {
     let board = initializeBoard();
     displayBoard(board);
     displayScore(score.player, score.computer);
     displayCurrentGame (currentGame, NUMBER_OF_GAMES);
 
+    // Match loop
     while (true) {
       chooseSquare(board, currentPlayer);
       currentPlayer = alternatePlayer(currentPlayer);
