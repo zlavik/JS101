@@ -4,7 +4,7 @@ const HUMAN_MARKER = 'X';
 const COMPUTER_MARKER = 'O';
 const MESSAGES = require('./tictactoeMessages.json');
 const NUMBER_OF_GAMES = 3;
-const VALID_PLAYER = ['player', 'computer', 'c', 'p', 'C', 'P'];
+const VALID_PLAYER = ['Player', 'Computer', 'C', 'P'];
 const CURRENT_PLAYER = 'nobody';
 const WINNING_LINES = [
   [1, 2, 3], [4, 5, 6], [7, 8, 9],
@@ -217,15 +217,14 @@ function findAtRiskSquare (line, board, marker) {
 function chooseWhoStartsFirst(initialChoice) {
   let starter;
 
-  if (initialChoice === 'player' ||
-   initialChoice === 'p' ||  initialChoice === 'P' ) {
+  if (initialChoice.includes('Player', 'P') ) {
     starter = 'Player';
-  } else if (initialChoice === 'computer' ||
-   initialChoice === 'c' || initialChoice === 'C') {
+  } else if (initialChoice.includes('Computer', 'C')) {
     starter = 'Computer';
   } else if (initialChoice === 'nobody') {
     prompt('askWhoGoesFirst');
     let answer = readline.question();
+    answer = answer[0].toUpperCase() + answer.slice(1);
     if (!VALID_PLAYER.includes(answer)) {
       prompt('invalidWhoGoesFirstAnswer');
       answer = readline.question();
@@ -252,22 +251,41 @@ function displayWhoWon(board) {
   }
 }
 
+function updateScore (score, winner) {
+  score[winner] += 1;
+}
+
+function announceResult(score) {
+  console.clear();
+  displayScore(score.Player, score.Computer);
+
+  if (score.Player > score.Computer) {
+    prompt("playerWon");
+  } else if (score.Player < score.Computer) {
+    prompt("computerWon");
+  } else {
+    prompt("tie");
+  }
+
+}
+
 console.clear();
+prompt("infoOnKeys");
 let currentPlayer = chooseWhoStartsFirst(CURRENT_PLAYER);
 
 
 // Game
 while (true) {
 
-  let currentGame = 0;
-  let score = {player : 0, computer : 0};
-  displayScore(score.player, score.computer);
+  let currentGame = 1;
+  let score = {Player : 0, Computer : 0};
+  displayScore(score.Player, score.Computer);
 
 
-  while (currentGame < NUMBER_OF_GAMES) {
+  while (currentGame <= NUMBER_OF_GAMES) {
     let board = initializeBoard();
     displayBoard(board);
-    displayScore(score.player, score.computer);
+    displayScore(score.Player, score.Computer);
     displayCurrentGame (currentGame, NUMBER_OF_GAMES);
 
     // Match loop
@@ -276,39 +294,26 @@ while (true) {
       currentPlayer = alternatePlayer(currentPlayer);
       if (someoneWon(board) || boardFull(board)) break;
       displayBoard(board);
-      displayScore(score.player, score.computer);
+      displayScore(score.Player, score.Computer);
       displayCurrentGame (currentGame, NUMBER_OF_GAMES);
     }
 
-    currentGame += 1;
     displayBoard(board);
-
     displayWhoWon(board);
 
-    if (detectWinner(board) === 'Player') {
-      score.player += 1;
-    } else if (detectWinner(board) === 'Computer') {
-      score.computer += 1;
-    }
+    updateScore(score,detectWinner(board));
+    displayScore(score.Player, score.Computer);
 
-    displayScore(score.player, score.computer);
     displayCurrentGame (currentGame, NUMBER_OF_GAMES);
+    currentGame += 1;
 
     prompt('AskToContinue');
     let answer = readline.question();
     if (answer === '') continue;
-    displayScore(score.player, score.computer);
+    displayScore(score.Player, score.Computer);
   }
-  console.clear();
-  displayScore(score.player, score.computer);
 
-  if (score.player > score.computer) {
-    prompt("playerWon");
-  } else if (score.player < score.computer) {
-    prompt("computerWon");
-  } else {
-    prompt("tie");
-  }
+  announceResult(score);
 
   let answer = fetchChoice("playAgain");
   if (answer === 'y' || answer === 'yes') {
@@ -317,4 +322,5 @@ while (true) {
     break;
   }
 }
+console.clear();
 prompt('exitMsg');
