@@ -13,8 +13,8 @@ const VALID_PLAY_AGAIN_CHOICES = ['y', 'yes', 'n', 'no', ];
 const readline = require('readline-sync');
 const MESSAGES = require('./twenty_oneMessages.json');
 const DECK_SUIT = ['♦', '♥', '♣', '♠'];
-const CARD_VALUES = ['A', '2', '3', '4', '5', '6', '7',
-  '8', '9', '10', 'J', 'Q', 'K'];
+const CARD_VALUES =
+['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 const VALID_ACTIONS = ['s', 'h'];
 const MAX_HIT = 21;
 const DEALER_MAX_STAY = MAX_HIT - 4;
@@ -58,7 +58,7 @@ function initalizeDeck() {
 
     for (let valueIndex = 0; valueIndex < CARD_VALUES.length; valueIndex++) {
       let value = CARD_VALUES[valueIndex];
-      deck.push([suit, value]);
+      deck.push({suit, value});
     }
   }
   return shuffle(deck);
@@ -73,23 +73,25 @@ function shuffle(cards) {
 }
 
 function total(cards) {
-  let values = cards.map(card => card[1]);
+  let values = cards.map((card) => card.value);
 
   let sum = 0;
-  values.forEach(value => {
+  for (let value of values) {
     if (value === "A") {
       sum += 11;
     } else if (['J', 'Q', 'K'].includes(value)) {
       sum += 10;
     } else {
-      sum += Number(value);
+      sum += +value;
     }
-  });
+  }
+  return correctTotalForAces(sum, values);
+}
 
+function correctTotalForAces(sum, values) {
   values.filter(value => value === "A").forEach(_ => {
-    if (sum > MAX_HIT) sum -= 10;
+    if (sum > 21) sum -= 10;
   });
-
   return sum;
 }
 
@@ -136,13 +138,13 @@ function displayResults(dealerValue, playerValue) {
 }
 
 function hand(cards) {
-  return cards.map(card => `${card[1]}${card[0]}`).join(' ');
+  return cards.map(card => `${card.suit}${card.value}`).join(' ');
 }
 
 function showHandAndVal(dlrHand, plrHand, plrVal, dlrVal, mask = false) {
   if (mask) {
     prompt("divider");
-    displayMessage(`Dealers hand: ${dlrHand[0][1]}${dlrHand[0][0]} ??`);
+    displayMessage(`Dealers hand: ${dlrHand[0].suit}${dlrHand[0].value} ??`);
   } else {
     prompt("divider");
     displayMessage(`Dealers hand: ${hand(dlrHand)}`);
@@ -281,7 +283,7 @@ while (true) {
 
 
     //Player Loop
-    while (true) {
+    while (true && playerValue < 21) {
       let answer = retrieveHitOrStayAnswer();
 
       if (isHit(answer)) {
@@ -292,7 +294,7 @@ while (true) {
           playerValue, dealerValue, currentGame, true);
       }
 
-      if (isStay(answer) || busted(playerValue) || playerValue === 21) break;
+      if (isStay(answer) || busted(playerValue)) break;
 
     }
 
