@@ -9,10 +9,11 @@
 6. If dealer busts, player wins.
 7. Compare cards and declare winner.
 */
+const VALID_PLAY_AGAIN_CHOICES = ['y', 'yes', 'n', 'no', ];
 const readline = require('readline-sync');
 const MESSAGES = require('./twenty_oneMessages.json');
 const DECK_SUIT = ['♦', '♥', '♣', '♠'];
-const DECK_TYPE = ['A', '2', '3', '4', '5', '6', '7',
+const CARD_VALUES = ['A', '2', '3', '4', '5', '6', '7',
   '8', '9', '10', 'J', 'Q', 'K'];
 const VALID_ACTIONS = ['s', 'h'];
 const MAX_HIT = 21;
@@ -36,15 +37,11 @@ function displayMessage(message) {
 
 
 // Validations
-const isValidPlayAgainChoice = input => {
-  return input !== "y" && input !== "no" &&
-        input !== "n" && input !== "yes";
-};
 
 function fetchChoice(input) {
   prompt(input);
   let answer = readline.question().toLowerCase();
-  while (isValidPlayAgainChoice(answer, input)) {
+  while (!VALID_PLAY_AGAIN_CHOICES.includes(answer)) {
     prompt(`invalid_${input}`);
     answer = readline.question().toLowerCase();
   }
@@ -59,8 +56,8 @@ function initalizeDeck() {
   for (let suitIndex = 0; suitIndex < DECK_SUIT.length; suitIndex++) {
     let suit = DECK_SUIT[suitIndex];
 
-    for (let valueIndex = 0; valueIndex < DECK_TYPE.length; valueIndex++) {
-      let value = DECK_TYPE[valueIndex];
+    for (let valueIndex = 0; valueIndex < CARD_VALUES.length; valueIndex++) {
+      let value = CARD_VALUES[valueIndex];
       deck.push([suit, value]);
     }
   }
@@ -152,9 +149,9 @@ function showHandAndVal(dlrHand, plrHand, plrVal, dlrVal, mask = false) {
   }
   displayMessage(`Players hand: ${hand(plrHand)}`);
   prompt("divider");
-  displayMessage(`Players Value: ${plrVal}`);
+  displayMessage(`Players hand strength: ${plrVal}`);
   if (!mask) {
-    displayMessage(`Dealers Value: ${dlrVal}`);
+    displayMessage(`Dealers hand strength: ${dlrVal}`);
   }
 }
 
@@ -186,7 +183,7 @@ function displayRoundMessage(currentGame) {
   }
 }
 
-function askPlayerForDecision() {
+function retrieveHitOrStayAnswer() {
   prompt('askToHitOrStay');
   let answer = readline.question().toLowerCase();
   while (!VALID_ACTIONS.includes(answer)) {
@@ -220,8 +217,6 @@ function updateWinnersScore(dealerValue, playerValue, score) {
     case 'PLAYER':
       score['Player'] += 1;
       break;
-    case 'TIE':
-
   }
 
 }
@@ -241,6 +236,26 @@ function displayFinalResults(score) {
   }
 }
 
+function isHit(answer) {
+  return answer === 'h';
+}
+
+function isStay(answer) {
+  return answer === 's';
+}
+
+function displayGameInfo (score, dealerHand, playerHand,
+  playerValue, dealerValue, currentGame, mask = false) {
+  if (mask) {
+    displayScore(score);
+    showHandAndVal(dealerHand, playerHand, playerValue, dealerValue, true);
+    displayCurrentGame(currentGame);
+  } else {
+    displayScore(score);
+    showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
+    displayCurrentGame(currentGame);
+  }
+}
 console.clear();
 prompt('welcomeMsg');
 
@@ -254,57 +269,57 @@ while (true) {
   while (currentGame <= BEST_OF) {
     displayRoundMessage(currentGame);
     console.clear();
+
     let deck =  initalizeDeck();
     let playerHand = dealCards(deck, 2);
     let dealerHand = dealCards(deck, 2);
     let playerValue = total(playerHand);
     let dealerValue = total(dealerHand);
-    displayScore(score);
-    showHandAndVal(dealerHand, playerHand, playerValue, dealerValue, true);
-    displayCurrentGame(currentGame);
+
+    displayGameInfo (score, dealerHand, playerHand,
+      playerValue, dealerValue, currentGame, true);
+
+
     //Player Loop
     while (true) {
-      let answer = askPlayerForDecision();
+      let answer = retrieveHitOrStayAnswer();
 
-      if (answer === 'h') {
+      if (isHit(answer)) {
         shortDisplay("playerHit");
         dealCard(deck, playerHand);
         playerValue = updateTotals(playerValue, playerHand);
-        displayScore(score);
-        showHandAndVal(dealerHand, playerHand, playerValue, dealerValue, true);
-        displayCurrentGame(currentGame);
+        displayGameInfo (score, dealerHand, playerHand,
+          playerValue, dealerValue, currentGame, true);
       }
-      if (answer === 's' || busted(playerValue)) break;
+
+      if (isStay(answer) || busted(playerValue) || playerValue === 21) break;
+
     }
 
     if (busted(playerValue)) {
       updateWinnersScore(dealerValue, playerValue, score);
-      displayScore(score);
-      showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
-      displayCurrentGame(currentGame);
+      displayGameInfo (score, dealerHand, playerHand,
+        playerValue, dealerValue, currentGame);
       displayResults(dealerValue, playerValue);
       currentGame += 1;
       sleep(1750);
       continue;
 
     } else {
-      displayScore(score);
-      showHandAndVal(dealerHand, playerHand, playerValue, dealerValue, true);
-      displayCurrentGame(currentGame);
+      displayGameInfo (score, dealerHand, playerHand,
+        playerValue, dealerValue, currentGame, true);
       shortDisplay(`playerStayed`);
     }
 
     console.clear();
-    displayScore(score);
-    showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
-    displayCurrentGame(currentGame);
+    displayGameInfo (score, dealerHand, playerHand,
+      playerValue, dealerValue, currentGame);
     shortDisplay("dealerTurn",);
 
     //Dealers loop
     while (dealerValue < DEALER_MAX_STAY) {
-      displayScore(score);
-      showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
-      displayCurrentGame(currentGame);
+      displayGameInfo (score, dealerHand, playerHand,
+        playerValue, dealerValue, currentGame);
       shortDisplay('dealerHits', false);
       dealCard(deck, dealerHand);
       dealerValue = updateTotals(dealerValue, dealerHand);
@@ -312,9 +327,8 @@ while (true) {
 
     if (busted(dealerValue)) {
       updateWinnersScore(dealerValue, playerValue, score);
-      displayScore(score);
-      showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
-      displayCurrentGame(currentGame);
+      displayGameInfo (score, dealerHand, playerHand,
+        playerValue, dealerValue, currentGame);
       displayResults(dealerValue, playerValue);
       currentGame += 1;
       sleep(1750);
@@ -322,9 +336,8 @@ while (true) {
 
     } else {
       updateWinnersScore(dealerValue, playerValue, score);
-      displayScore(score);
-      showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
-      displayCurrentGame(currentGame);
+      displayGameInfo (score, dealerHand, playerHand,
+        playerValue, dealerValue, currentGame);
       shortDisplay('dealerStayed', false);
     }
 
