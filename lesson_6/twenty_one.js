@@ -90,7 +90,7 @@ function total(cards) {
 
 function correctTotalForAces(sum, values) {
   values.filter(value => value === "A").forEach(_ => {
-    if (sum > 21) sum -= 10;
+    if (sum > MAX_HIT) sum -= 10;
   });
   return sum;
 }
@@ -141,19 +141,21 @@ function hand(cards) {
   return cards.map(card => `${card.suit}${card.value}`).join(' ');
 }
 
-function showHandAndVal(dlrHand, plrHand, plrVal, dlrVal, mask = false) {
+function displayHandAndValue(
+  dealerHand, playerHand, playerValue, dealerValue, mask = false
+) {
   if (mask) {
     prompt("divider");
-    displayMessage(`Dealers hand: ${dlrHand[0].suit}${dlrHand[0].value} ??`);
+    displayMessage(`Dealers hand: ${dealerHand[0].suit}${dealerHand[0].value} ??`);
   } else {
     prompt("divider");
-    displayMessage(`Dealers hand: ${hand(dlrHand)}`);
+    displayMessage(`Dealers hand: ${hand(dealerHand)}`);
   }
-  displayMessage(`Players hand: ${hand(plrHand)}`);
+  displayMessage(`Players hand: ${hand(playerHand)}`);
   prompt("divider");
-  displayMessage(`Players hand strength: ${plrVal}`);
+  displayMessage(`Players hand strength: ${playerValue}`);
   if (!mask) {
-    displayMessage(`Dealers hand strength: ${dlrVal}`);
+    displayMessage(`Dealers hand strength: ${dealerValue}`);
   }
 }
 
@@ -161,8 +163,8 @@ function updateTotals(playerValue, playerHand) {
   playerValue = total(playerHand);
   return playerValue;
 }
-function dealCards(deck, qty) {
-  return deck.splice(0, qty);
+function dealCards(deck, quantity) {
+  return deck.splice(0, quantity);
 }
 function dealCard(deck, playerCards) {
   playerCards.push(...dealCards(deck, 1));
@@ -250,11 +252,11 @@ function displayGameInfo (score, dealerHand, playerHand,
   playerValue, dealerValue, currentGame, mask = false) {
   if (mask) {
     displayScore(score);
-    showHandAndVal(dealerHand, playerHand, playerValue, dealerValue, true);
+    displayHandAndValue(dealerHand, playerHand, playerValue, dealerValue, true);
     displayCurrentGame(currentGame);
   } else {
     displayScore(score);
-    showHandAndVal(dealerHand, playerHand, playerValue, dealerValue);
+    displayHandAndValue(dealerHand, playerHand, playerValue, dealerValue);
     displayCurrentGame(currentGame);
   }
 }
@@ -283,7 +285,7 @@ while (true) {
 
 
     //Player Loop
-    while (true && playerValue < 21) {
+    while (true && playerValue < MAX_HIT) {
       let answer = retrieveHitOrStayAnswer();
 
       if (isHit(answer)) {
