@@ -357,3 +357,4 @@ while (true) {
 
 console.clear();
 prompt('exitMsg');
+sleep(3000);
